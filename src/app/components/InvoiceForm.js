@@ -146,6 +146,45 @@ export default function InvoiceForm() {
       doc.lastAutoTable.finalY + 12,
       { align: "right" }
     );
+
+    // Tampilkan informasi rekening bank dengan border dashed warna ungu
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(0, 0, 0);
+
+    const bankNote = [
+      "Silakan lakukan pembayaran ke rekening berikut:",
+      "Bank BRI - 7092 0101 2919 504",
+      "a.n. Ahmad Bagus Prayoga",
+    ];
+
+    const PaymentboxX = 15;
+    const PaymentboxY = doc.lastAutoTable.finalY + 20;
+    const PaymentboxWidth = doc.internal.pageSize.getWidth() - 30;
+    const PaymentlineHeight = 7;
+    const PaymentboxHeight = bankNote.length * PaymentlineHeight + 10;
+
+    // Atur warna ungu dan garis putus-putus
+    doc.setDrawColor(112, 14, 210); // warna ungu
+    doc.setLineWidth(0.5);
+    doc.setLineDashPattern([2, 2], 0); // garis putus-putus
+
+    // Gambar border kotak
+    doc.rect(PaymentboxX, PaymentboxY, PaymentboxWidth, PaymentboxHeight);
+
+    // Reset dash pattern ke solid
+    doc.setLineDashPattern([], 0);
+
+    // Tulis teks ke dalam kotak
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(0, 0, 0);
+    bankNote.forEach((line, idx) => {
+      doc.text(
+        line,
+        PaymentboxX + 5,
+        PaymentboxY + 8 + idx * PaymentlineHeight
+      );
+    });
   };
 
   // ✅ Di luar buildPDF
